@@ -15,13 +15,26 @@ contract TokenFactoryTest is Test {
     }
 
     function test_CreateToken() public {
-        string memory name= "Test TOKEN";
+        string memory name = "Test TOKEN";
         string memory symbol = "TT";
-        address tokenAddress = tokenFactory.createToken(name,symbol);
+        address tokenAddress = tokenFactory.createToken(name, symbol);
         Token token = Token(tokenAddress);
-        
-        assertEq(tokenFactory.tokens(tokenAddress),true);
-        assertEq(token.totalSupply(),tokenFactory.INITIAL_SUPPLY());
+
+        assertEq(tokenFactory.tokens(tokenAddress), true);
+        assertEq(token.totalSupply(), tokenFactory.INITIAL_SUPPLY());
+    }
+
+    function test_calIsReq() public {
+        string memory name = "Test TOKEN";
+        string memory symbol = "TT";
+        address tokenAddress = tokenFactory.createToken(name, symbol);
+        // Token token = Token(tokenAddress);
+
+        uint totalBuyableSupply = tokenFactory.MAX_SUPPLY() - tokenFactory.INITIAL_SUPPLY();
+
+        uint reqEth = tokenFactory.calRequiredEth(tokenAddress,totalBuyableSupply);
+
+        assertEq(reqEth,30*1e18);
 
     }
 
